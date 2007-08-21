@@ -1,3 +1,6 @@
+" Taken from http://en.wikipedia.org/wiki/Wikipedia:Text_editor_support#Vim
+" 	Ian Tegebo <ian.tegebo@gmail.com>
+
 " Wikipedia syntax file for Vim
 " Published on Wikipedia in 2003-04 and declared authorless.
 " 
@@ -22,6 +25,9 @@ else
 endif
 
 syn case ignore
+
+syn spell toplevel
+set spell
 
 " tags
 syn region  htmlString   contained start=+"+ end=+"+ contains=htmlSpecialChar
@@ -116,26 +122,27 @@ syn region htmlTitle start="<title\>" end="</title>"me=e-8 contains=htmlTag,html
 
 "syn region wikiBoldAndItalic start="'''''" end="'''''" skip="<nowiki>.*</nowiki>" contains=wikiLink
 
-syn region wikiItalic			start=+'\@<!'''\@!+	end=+''+ contains=wikiLink,wikiItalicBold
-syn region wikiBold				start=+'''+			end=+'''+ contains=wikiLink,wikiBoldItalic
-syn region wikiBoldAndItalic	start=+'''''+		end=+'''''+ contains=wikiLink
+syn region wikiItalic			start=+'\@<!'''\@!+	end=+''+ contains=@Spell,wikiLink,wikiItalicBold
+syn region wikiBold				start=+'''+			end=+'''+ contains=@Spell,wikiLink,wikiBoldItalic
+syn region wikiBoldAndItalic	start=+'''''+		end=+'''''+ contains=@Spell,wikiLink
 
-syn region wikiBoldItalic	contained	start=+'\@<!'''\@!+	end=+''+ contains=wikiLink
-syn region wikiItalicBold	contained	start=+'''+			end=+'''+ contains=wikiLink
+syn region wikiBoldItalic	contained	start=+'\@<!'''\@!+	end=+''+ contains=@Spell,wikiLink
+syn region wikiItalicBold	contained	start=+'''+			end=+'''+ contains=@Spell,wikiLink
 
-syn region wikiH1 start="^=" 		end="=" 	skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
-syn region wikiH2 start="^==" 		end="==" 	skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
-syn region wikiH3 start="^===" 		end="===" 	skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
-syn region wikiH4 start="^====" 	end="====" 	skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
-syn region wikiH5 start="^=====" 	end="=====" 	skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
-syn region wikiH6 start="^======" 	end="======" 	skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
-syn region wikiLink start="\[\[" end="\]\]" skip="<nowiki>.*</nowiki>" oneline
+syn region wikiH1 start="^=" 		end="=" 	skip="<nowiki>.*</nowiki>" oneline contains=@Spell,wikiLink
+syn region wikiH2 start="^==" 		end="==" 	skip="<nowiki>.*</nowiki>" oneline contains=@Spell,wikiLink
+syn region wikiH3 start="^===" 		end="===" 	skip="<nowiki>.*</nowiki>" oneline contains=@Spell,wikiLink
+syn region wikiH4 start="^====" 	end="====" 	skip="<nowiki>.*</nowiki>" oneline contains=@Spell,wikiLink
+syn region wikiH5 start="^=====" 	end="=====" 	skip="<nowiki>.*</nowiki>" oneline contains=@Spell,wikiLink
+syn region wikiH6 start="^======" 	end="======" 	skip="<nowiki>.*</nowiki>" oneline contains=@Spell,wikiLink
+syn region wikiLink start="\[\[" end="\]\]\(s\|'s\|es\|ing\|\)" skip="<nowiki>.*</nowiki>" oneline contains=wikiLink
 syn region wikiLink start="\[http:" end="\]" skip="<nowiki>.*</nowiki>" oneline
 syn region wikiLink start="\[https:" end="\]" skip="<nowiki>.*</nowiki>" oneline
 syn region wikiLink start="\[ftp:" end="\]" skip="<nowiki>.*</nowiki>" oneline
 syn region wikiLink start="\[gopher:" end="\]" skip="<nowiki>.*</nowiki>" oneline
 syn region wikiLink start="\[news:" end="\]" skip="<nowiki>.*</nowiki>" oneline
 syn region wikiLink start="\[mailto:" end="\]" skip="<nowiki>.*</nowiki>" oneline
+syn region wikiTemplate start="{{" end="}}" skip="<nowiki>.*</nowiki>" 
 
 syn match wikiParaFormatChar /^[\:|\*|;|#]\+/
 syn match wikiParaFormatChar /^-----*/
@@ -271,6 +278,7 @@ HtmlHiLink wikiH4		htmlH4
 HtmlHiLink wikiH5		htmlH5
 HtmlHiLink wikiH6		htmlH6
 HtmlHiLink wikiLink		Underlined
+HtmlHiLink wikiTemplate		Special
 HtmlHiLink wikiParaFormatChar	Special
 HtmlHiLink wikiPre		Constant
 HtmlHiLink wikiRef		Comment
@@ -283,25 +291,3 @@ delcommand HtmlHiLink
 if main_syntax == 'html'
   unlet main_syntax
 endif
-
-" these settings may also be put in ~/.vim/ftplugin/Wikipedia.vim
-setlocal textwidth=0
-setlocal linebreak
-setlocal matchpairs+=<:>
-setlocal encoding=utf8
-nnoremap <buffer> k gk
-nnoremap <buffer> j gj
-nnoremap <buffer> <Up> gk
-nnoremap <buffer> <Down> gj
-nnoremap <buffer> 0 g0
-nnoremap <buffer> ^ g^
-nnoremap <buffer> $ g$
-inoremap <buffer> <Up> <C-O>gk
-inoremap <buffer> <Down> <C-O>gj
-vnoremap <buffer> k gk
-vnoremap <buffer> j gj
-vnoremap <buffer> <Up> gk
-vnoremap <buffer> <Down> gj
-vnoremap <buffer> 0 g0
-vnoremap <buffer> ^ g^
-vnoremap <buffer> $ g$
